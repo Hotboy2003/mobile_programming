@@ -36,14 +36,15 @@ class PhonesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
     {
         return mPhonesList.count()
     }
-}
 
-class PhonesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-{
-    fun bind(mPhones: PhoneModel) {
-        itemView.findViewById<TextView>(R.id.title).text = mPhones.name
-        itemView.findViewById<TextView>(R.id.price).text = "Launch price: " + mPhones.price
-        itemView.findViewById<TextView>(R.id.date).text = "Launch date: " + mPhones.date
-        itemView.findViewById<TextView>(R.id.score).text = "Camera score: " + mPhones.score
+    inner class PhonesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    {
+        fun bind(mPhones: PhoneModel) {
+            itemView.findViewById<TextView>(R.id.title).text = mPhones.name
+            itemView.findViewById<TextView>(R.id.price).text = "Launch price: " + mPhones.price
+            itemView.findViewById<TextView>(R.id.date).text = "Launch date: " + mPhones.date
+            itemView.findViewById<TextView>(R.id.score).text = "Camera score: " + mPhones.score
+        }
     }
 }
+
