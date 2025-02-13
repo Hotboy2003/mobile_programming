@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/firstFragment"
+    android:id="@+id/nav_graph">
+
+    <fragment
+        android:id="@+id/firstFragment"
+        android:name="com.Obynochniy.lab_1.firstFragment"
+        android:label="First Fragment" />
+
+    <fragment
+        android:id="@+id/secondFragment"
+        android:name="com.Obynochniy.lab_1.secondFragment"
+        android:label="Second Fragment" />
+
+</navigation>
