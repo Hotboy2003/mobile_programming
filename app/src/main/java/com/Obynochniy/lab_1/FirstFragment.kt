@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_first.view.*
 
 
-class firstFragment : Fragment() {
+class FirstFragment : Fragment() {
     private val myAdapter = PhonesAdapter()
 
     override fun onCreateView(

@@ -2,6 +2,7 @@ package com.Obynochniy.lab_1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
@@ -20,5 +21,16 @@ class ContentActivity : AppCompatActivity()
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
         bottom_nav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener{
+            _, dist, _ ->
+                when(dist.id){
+                    R.id.splashFragment -> bottom_nav.visibility = View.GONE
+                    R.id.registerFragment -> bottom_nav.visibility = View.GONE
+                    R.id.loginFragment -> bottom_nav.visibility = View.GONE
+                    R.id.firstFragment -> bottom_nav.visibility = View.VISIBLE
+                    R.id.secondFragment -> bottom_nav.visibility = View.VISIBLE
+                }
+        }
     }
 }

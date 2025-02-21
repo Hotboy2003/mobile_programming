@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "482665412067",
+    "project_id": "phonerating-b8196",
+    "storage_bucket": "phonerating-b8196.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482665412067:android:ee0d4f9622257a7f949cd6",
+        "android_client_info": {
+          "package_name": "com.Obynochniy.lab_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtrA9-MXMEY4CHcvp5KttwqD5oBSIuwek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

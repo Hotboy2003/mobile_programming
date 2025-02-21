@@ -1,39 +1,45 @@
 package com.Obynochniy.lab_1
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import com.google.firebase.auth.FirebaseAuth
 
-class RegistrationActivity : AppCompatActivity()
+class RegisterFragment : Fragment()
 {
     private var isPhoneRegistration = 1
     private lateinit var sharedPreferences: SharedPreferences
 
     @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registration)
+        val root = inflater.inflate(R.layout.fragment_register, container, false)
+        val navController = NavHostFragment.findNavController(this)
+        sharedPreferences = requireActivity().getSharedPreferences("data", Context.MODE_PRIVATE)
 
-        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
-
-        val phoneRegistration = findViewById<Button>(R.id.phoneRegistrationButton)
-        val emailRegistration = findViewById<Button>(R.id.emailRegistrationButton)
-        val emailEditText = findViewById<EditText>(R.id.emailEditText)
-        val passwordEditText = findViewById<EditText>(R.id.passwordEditText)
-        val confirmPasswordEditText = findViewById<EditText>(R.id.confirmPasswordEditText)
-        val registerButton = findViewById<Button>(R.id.registerButton)
+        val phoneRegistration = root.findViewById<Button>(R.id.phoneRegistrationButton)
+        val emailRegistration = root.findViewById<Button>(R.id.emailRegistrationButton)
+        val emailEditText = root.findViewById<EditText>(R.id.emailEditText)
+        val passwordEditText = root.findViewById<EditText>(R.id.passwordEditText)
+        val confirmPasswordEditText = root.findViewById<EditText>(R.id.confirmPasswordEditText)
+        val registerButton = root.findViewById<Button>(R.id.registerButton)
 
         phoneRegistration.setOnClickListener {
-            val color = ContextCompat.getColor(this, android.R.color.holo_blue_dark)
+            val color = ContextCompat.getColor(requireContext(), android.R.color.holo_blue_dark)
             phoneRegistration.setTextColor(color)
 
             val grayColor = Color.GRAY
@@ -46,7 +52,7 @@ class RegistrationActivity : AppCompatActivity()
         }
 
         emailRegistration.setOnClickListener {
-            val color = ContextCompat.getColor(this, android.R.color.holo_blue_dark)
+            val color = ContextCompat.getColor(requireContext(), android.R.color.holo_blue_dark)
             emailRegistration.setTextColor(color)
 
             val grayColor = Color.GRAY
@@ -68,13 +74,13 @@ class RegistrationActivity : AppCompatActivity()
             {
                 saveUserData(
                     emailEditText.text.toString(),
-                    passwordEditText.text.toString()
+                    passwordEditText.text.toString(),
+                    navController
                 )
-                showToast("Регистрация прошла успешно")
-                startActivity(Intent(this, ContentActivity::class.java))
-                finish()
+//                navController.navigate(R.id.firstFragment)
             }
         }
+        return root
     }
 
     private fun validateInputs(
@@ -137,23 +143,34 @@ class RegistrationActivity : AppCompatActivity()
         return true
     }
 
-    private fun saveUserData(emailOrPhone: String, password: String)
+    private fun saveUserData(emailOrPhone: String, password: String, navController: NavController)
     {
-        val editor = sharedPreferences.edit()
-        if (isPhoneRegistration == 0)
-        {
-            editor.putString("email", emailOrPhone)
+        val auth = FirebaseAuth.getInstance()
+        auth.createUserWithEmailAndPassword(emailOrPhone, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val editor = sharedPreferences.edit()
+                editor.putBoolean("isRegistered", true).apply()
+                navController.navigate(R.id.firstFragment)
+            }
+        }.addOnFailureListener {
+            exception -> Toast.makeText(requireContext(), exception.localizedMessage, Toast.LENGTH_SHORT).show()
         }
-        else
-        {
-            editor.putString("phone", emailOrPhone)
-        }
-        editor.putString("password", password)
-        editor.apply()
+        //showToast("Регистрация прошла успешно")
+//        val editor = sharedPreferences.edit()
+//        if (isPhoneRegistration == 0)
+//        {
+//            editor.putString("email", emailOrPhone)
+//        }
+//        else
+//        {
+//            editor.putString("phone", emailOrPhone)
+//        }
+//        editor.putString("password", password)
+//        editor.apply()
     }
 
     private fun showToast(message: String)
     {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }
